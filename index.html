@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Music</title>
-<!-- Reads song tags (title, artist, album, cover art). The player still works without it, using file names. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
 <style>
   :root {
@@ -93,64 +92,6 @@
   #msg { color: var(--muted); font-size: .85rem; padding: 0 28px; min-height: 1.2em; }
   #msg.err { color: #ff8a8a; }
 
-  /* ---------- Now Playing page ---------- */
-  #npPage {
-    position: fixed; left: 8px; right: 8px; top: 8px; bottom: 106px; z-index: 40;
-    border-radius: 8px; overflow-y: auto; display: none; flex-direction: column;
-    background: linear-gradient(180deg, #2c2c54 0%, #121212 90%);
-  }
-  #npPage.open { display: flex; }
-  .np-top { display: flex; align-items: center; gap: 14px; padding: 18px 24px; position: sticky; top: 0; z-index: 2; }
-  .back-btn {
-    display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,.35); color: #fff; border: none;
-    border-radius: 500px; padding: 10px 18px; font-weight: 700; font-size: .9rem; cursor: pointer;
-  }
-  .back-btn:hover { background: rgba(0,0,0,.55); transform: scale(1.03); }
-  .np-label { font-weight: 700; opacity: .85; }
-  .np-body { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 0 24px 40px; }
-  #npPage .np-art {
-    width: min(46vh, 80vw, 440px); height: auto; aspect-ratio: 1 / 1; border-radius: 14px;
-    font-size: 8rem; box-shadow: 0 20px 60px rgba(0,0,0,.55); margin-top: 4px;
-  }
-  .np-info { text-align: center; max-width: 720px; }
-  .np-info h2 { margin: 8px 0 4px; font-size: clamp(1.6rem, 4vw, 2.8rem); line-height: 1.1; word-break: break-word; }
-  #npArtist { font-size: 1.1rem; opacity: .85; }
-  .np-meta { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
-  .np-meta span { background: rgba(255,255,255,.12); border-radius: 500px; padding: 5px 12px; font-size: .78rem; }
-  .np-next { width: min(720px, 100%); margin-top: 18px; }
-  .np-next h3 { font-size: 1.25rem; margin: 0 0 10px; }
-  .np-row { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 6px; cursor: pointer; }
-  .np-row:hover { background: rgba(255,255,255,.1); }
-  .np-row .who { flex: 1; min-width: 0; }
-  .np-row .t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .np-row .a { font-size: .78rem; opacity: .75; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .np-row .d { font-size: .8rem; opacity: .75; }
-  .np-none { opacity: .7; font-size: .9rem; padding: 8px 10px; }
-
-  /* ---------- Context menu ---------- */
-  #menu { position: fixed; display: none; background: #282828; border-radius: 6px; padding: 4px; min-width: 230px; max-width: 300px; max-height: 70vh; overflow-y: auto; box-shadow: 0 16px 40px rgba(0,0,0,.6); z-index: 50; }
-  #menu .mi { padding: 10px 12px; font-size: .88rem; border-radius: 3px; cursor: pointer; color: #eee; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  #menu .mi:hover { background: #3e3e3e; }
-  #menu .mi.danger { color: #ff8a8a; }
-  #menu .ml { padding: 8px 12px 4px; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
-  #menu hr { border: none; border-top: 1px solid #3e3e3e; margin: 4px 0; }
-
-  /* ---------- Dialog ---------- */
-  dialog { background: #282828; color: #fff; border: none; border-radius: 10px; padding: 22px; width: min(420px, 92vw); }
-  dialog::backdrop { background: rgba(0,0,0,.7); }
-  dialog h3 { margin: 0 0 14px; }
-  dialog input { width: 100%; background: #3e3e3e; border: 1px solid transparent; color: #fff; border-radius: 6px; padding: 11px 12px; font-size: 1rem; outline: none; }
-  dialog input:focus { border-color: #fff; }
-  .dlg-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
-  .dbtn { background: transparent; color: #fff; border: none; font-weight: 700; padding: 10px 18px; border-radius: 500px; cursor: pointer; }
-  .dbtn:hover { transform: scale(1.04); }
-  .dbtn.primary { background: #fff; color: #000; }
-  .dbtn.danger { background: #e5484d; }
-  .info { display: grid; grid-template-columns: 90px 1fr; gap: 8px 12px; font-size: .9rem; }
-  .info dt { color: var(--muted); }
-  .info dd { margin: 0; word-break: break-word; }
-  .info-art { width: 140px; height: 140px; margin: 0 auto 16px; border-radius: 6px; font-size: 3rem; }
-
   /* ---------- Player bar ---------- */
   .bar { grid-column: 1 / -1; background: var(--bg); display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; padding: 0 12px; gap: 12px; }
   .np { display: flex; align-items: center; gap: 12px; min-width: 0; }
@@ -163,12 +104,10 @@
   .ctl { background: none; border: none; color: var(--muted); font-size: 1.15rem; cursor: pointer; padding: 4px; position: relative; }
   .ctl:hover { color: #fff; }
   .ctl.on { color: var(--green); }
-  .ctl.on::after { content: ""; position: absolute; left: 50%; bottom: -3px; width: 4px; height: 4px; border-radius: 50%; background: var(--green); transform: translateX(-50%); }
   .play-btn { width: 36px; height: 36px; border-radius: 50%; background: #fff; color: #000; border: none; font-size: 1rem; cursor: pointer; display: grid; place-items: center; }
   .play-btn:hover { transform: scale(1.06); }
   .progress { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 560px; font-size: .72rem; color: var(--muted); }
   .progress span { width: 38px; }
-  .progress span:first-child { text-align: right; }
   .right { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
   .right input { width: 100px; }
 
@@ -177,25 +116,6 @@
   input[type=range]:hover { background: linear-gradient(to right, var(--green) var(--pct, 0%), #4d4d4d var(--pct, 0%)); }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; opacity: 0; }
   input[type=range]:hover::-webkit-slider-thumb { opacity: 1; }
-  input[type=range]::-moz-range-thumb { width: 12px; height: 12px; border: none; border-radius: 50%; background: #fff; }
-
-  @media (max-width: 800px) {
-    body { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
-    .sidebar { flex-direction: row; align-items: center; overflow-x: auto; padding: 10px; gap: 8px; }
-    .logo, .side-note, .pl-head span, .pl-none { display: none; }
-    .pl-head { border: none; padding: 0; }
-    .pl-list { display: flex; gap: 8px; overflow: visible; flex: none; }
-    .nav-item, .pl-item { white-space: nowrap; background: #242424; flex-shrink: 0; }
-    .add-btn { margin: 0; white-space: nowrap; flex-shrink: 0; }
-    .hero-art { width: 100px; height: 100px; font-size: 2.2rem; }
-    .head, .row { grid-template-columns: 30px minmax(0, 1fr) 54px 32px; }
-    .head > :nth-child(3), .row .alb { display: none; }
-    .bar { grid-template-columns: 1fr; padding: 10px 12px; }
-    .right { display: none; }
-    .np .thumb { width: 44px; height: 44px; }
-    .search { margin-left: 0; }
-    #npPage .np-art { font-size: 5rem; }
-  }
 </style>
 </head>
 <body>
@@ -204,10 +124,10 @@
   <div class="logo"><span>♪</span> My Music</div>
   <div class="nav-item active" id="navLib">Home</div>
   <button class="add-btn" id="addBtn">＋ Add songs</button>
-  <input type="file" id="files" accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac,.flac,.opus" multiple hidden>
-  <div class="pl-head"><span>Playlists</span><button id="newPl" title="Create playlist">＋</button></div>
+  <input type="file" id="files" accept="audio/*,.mp3,.wav,.ogg,.m4a" multiple hidden>
+  <div class="pl-head"><span>Playlists</span><button id="newPl">＋</button></div>
   <div class="pl-list" id="plList"></div>
-  <div class="side-note">Your songs stay on this device, saved in your browser. Made by TSC!</div>
+  <div class="side-note">Your songs stay on this device. Made by TSC!</div>
 </aside>
 
 <main class="main" id="main">
@@ -221,7 +141,7 @@
   </div>
 
   <div class="toolbar">
-    <button class="big-play" id="bigPlay" title="Play">▶</button>
+    <button class="big-play" id="bigPlay">▶</button>
     <button class="pill" id="renamePl" hidden>Rename</button>
     <button class="pill danger" id="deletePl" hidden>Delete playlist</button>
     <input class="search" id="search" type="search" placeholder="Search title, artist, album">
@@ -231,9 +151,9 @@
   <div class="list">
     <div class="head">
       <div style="text-align:center">#</div>
-      <div data-sort="title" id="hTitle">Title</div>
-      <div data-sort="album" id="hAlbum">Album</div>
-      <div class="dur" data-sort="duration" id="hDur">Time</div>
+      <div>Title</div>
+      <div>Album</div>
+      <div class="dur">Time</div>
       <div></div>
     </div>
     <div id="rows"></div>
@@ -241,42 +161,22 @@
   </div>
 </main>
 
-<!-- Now Playing page -->
-<section id="npPage" aria-label="Now playing">
-  <div class="np-top">
-    <button class="back-btn" id="npBack" title="Back">← Back</button>
-    <div class="np-label">Now Playing</div>
-  </div>
-  <div class="np-body">
-    <div class="thumb np-art" id="npArt">♪</div>
-    <div class="np-info">
-      <h2 id="npTitle"></h2>
-      <div id="npArtist"></div>
-      <div class="np-meta" id="npMeta"></div>
-    </div>
-    <div class="np-next">
-      <h3 id="npNextHead">Up next</h3>
-      <div id="npNextList"></div>
-    </div>
-  </div>
-</section>
-
 <footer class="bar" id="bar">
   <div class="np">
-    <div class="thumb" id="npThumb" title="Open Now Playing">♪</div>
+    <div class="thumb" id="npThumb">♪</div>
     <div style="min-width:0">
-      <div class="name" id="npName" title="Open Now Playing">Nothing playing</div>
+      <div class="name" id="npName">Nothing playing</div>
       <div class="sub" id="npSub">Add some songs</div>
     </div>
   </div>
 
   <div class="center">
     <div class="controls">
-      <button class="ctl" id="shuffle" title="Shuffle">🔀</button>
-      <button class="ctl" id="prev" title="Previous">⏮</button>
-      <button class="play-btn" id="play" title="Play/Pause">▶</button>
-      <button class="ctl" id="next" title="Next">⏭</button>
-      <button class="ctl" id="repeat" title="Repeat">🔁</button>
+      <button class="ctl" id="shuffle">🔀</button>
+      <button class="ctl" id="prev">⏮</button>
+      <button class="play-btn" id="play">▶</button>
+      <button class="ctl" id="next">⏭</button>
+      <button class="ctl" id="repeat">🔁</button>
     </div>
     <div class="progress">
       <span id="cur">0:00</span>
@@ -286,652 +186,138 @@
   </div>
 
   <div class="right">
-    <button class="ctl" id="mute" title="Mute">🔊</button>
+    <button class="ctl" id="mute">🔊</button>
     <input type="range" id="vol" min="0" max="100" value="80">
   </div>
 </footer>
 
-<div id="menu"></div>
-<dialog id="dlg"><div id="dlgBody"></div><div class="dlg-actions" id="dlgActions"></div></dialog>
 <audio id="audio" preload="auto"></audio>
 
 <script>
 (() => {
   const $ = id => document.getElementById(id);
   const audio = $('audio');
-  const npPage = $('npPage');
 
-  /* ================= state ================= */
-  let tracks = [];            // song records
-  let playlists = [];         // {id, name, trackIds[]}
-  let view = 'library';       // 'library' or a playlist id
-  let sortKey = '', sortDir = 1;
-  let queue = [];             // track ids currently being played through
+  let tracks = [];
+  let playlists = [];
+  let view = 'library';
   let curId = null;
-  let shuffleOn = false, repeatMode = 0;   // repeat: 0 off, 1 all, 2 one
-  let history = [];
-  let db = null, memId = 1, currentUrl = null;
-  let npOpen = false;         // is the Now Playing page showing?
-  const coverUrls = new Map();
-  const colorCache = new Map();
-  const retried = new Set();
 
-  /* ================= helpers ================= */
+  const defaultSongs = [
+    {
+      id: 'song-1',
+      title: 'All Girls Are The Same',
+      artist: 'Juice WRLD',
+      album: 'Goodbye & Good Riddance',
+      duration: 165,
+      blob: 'audio/All Girls Are The Same.m4a'
+    },
+    {
+      id: 'song-2',
+      title: 'Armed & Dangerous',
+      artist: 'Juice WRLD',
+      album: 'Goodbye & Good Riddance',
+      duration: 170,
+      blob: 'audio/Armed & Dangerous.m4a'
+    },
+    {
+      id: 'song-3',
+      title: 'Black and White',
+      artist: 'Juice WRLD',
+      album: 'Goodbye & Good Riddance',
+      duration: 194,
+      blob: 'audio/Black and White.m4a'
+    }
+  ];
+
   const byId = id => tracks.find(t => t.id === id);
-  const clean = v => (v == null ? '' : String(v).trim());
   const titleOf = t => t.title || t.name || 'Untitled';
   const artistOf = t => t.artist || 'Unknown artist';
   const fmt = s => (!isFinite(s) || s <= 0) ? '0:00' : Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
-  const sizeMB = b => (b / 1048576).toFixed(1) + ' MB';
-  const hue = str => { let h = 0; for (const c of str) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
-  const thumbStyle = n => `background:linear-gradient(135deg,hsl(${hue(n)},60%,40%),hsl(${(hue(n)+50)%360},60%,25%))`;
-  const setPct = el => el.style.setProperty('--pct', (el.value / el.max * 100) + '%');
-  const isAudio = f => f.type.startsWith('audio/') || /\.(mp3|wav|ogg|m4a|aac|flac|opus|weba)$/i.test(f.name);
-  const msg = (t, err) => { const m = $('msg'); m.textContent = t || ''; m.className = err ? 'err' : ''; };
-  const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
 
-  function coverUrl(t) {
-    if (!t || !t.cover) return null;
-    if (!coverUrls.has(t.id)) coverUrls.set(t.id, URL.createObjectURL(t.cover));
-    return coverUrls.get(t.id);
-  }
-  function fillThumb(el, t) {
-    el.innerHTML = ''; el.removeAttribute('style');
-    const u = t && coverUrl(t);
-    if (u) { const img = document.createElement('img'); img.src = u; img.alt = ''; el.appendChild(img); }
-    else if (t) { el.setAttribute('style', thumbStyle(titleOf(t))); el.textContent = titleOf(t).charAt(0).toUpperCase(); }
-    else el.textContent = '♪';
-  }
-
-  /* ================= storage (IndexedDB) ================= */
-  function openDB() {
-    return new Promise((res, rej) => {
-      if (!window.indexedDB) return rej(new Error('no idb'));
-      const r = indexedDB.open('local-music-player', 2);
-      r.onupgradeneeded = () => {
-        const d = r.result;
-        if (!d.objectStoreNames.contains('tracks')) d.createObjectStore('tracks', { keyPath: 'id', autoIncrement: true });
-        if (!d.objectStoreNames.contains('playlists')) d.createObjectStore('playlists', { keyPath: 'id', autoIncrement: true });
-      };
-      r.onsuccess = () => res(r.result);
-      r.onerror = () => rej(r.error);
-    });
-  }
-  const idb = (store, mode, fn) => new Promise((res, rej) => {
-    const tx = db.transaction(store, mode);
-    const req = fn(tx.objectStore(store));
-    tx.oncomplete = () => res(req && req.result);
-    tx.onerror = tx.onabort = () => rej(tx.error);
-  });
-  const saveTrack = t => (db && typeof t.id === 'number') ? idb('tracks', 'readwrite', s => s.put(t)).catch(() => {}) : Promise.resolve();
-  const savePlaylist = p => (db && typeof p.id === 'number') ? idb('playlists', 'readwrite', s => s.put(p)).catch(() => {}) : Promise.resolve();
-
-  /* ================= metadata ================= */
-  function getDuration(blob) {
-    return new Promise(res => {
-      const a = new Audio(); const u = URL.createObjectURL(blob);
-      const done = d => { URL.revokeObjectURL(u); res(d || 0); };
-      a.preload = 'metadata';
-      a.onloadedmetadata = () => done(a.duration);
-      a.onerror = () => done(0);
-      setTimeout(() => done(0), 4000);
-      a.src = u;
-    });
-  }
-  function readTags(file) {
-    return new Promise(res => {
-      if (!window.jsmediatags) return res(null);          // library didn't load (offline)
-      try { window.jsmediatags.read(file, { onSuccess: t => res(t.tags || {}), onError: () => res({}) }); }
-      catch (e) { res({}); }
-      setTimeout(() => res({}), 6000);
-    });
-  }
-  function applyTags(rec, tags) {
-    tags = tags || {};
-    rec.title = clean(tags.title) || rec.name;
-    rec.artist = clean(tags.artist);
-    rec.album = clean(tags.album);
-    rec.year = clean(tags.year);
-    rec.genre = clean(tags.genre);
-    rec.trackNo = clean(tags.track);
-    const pic = tags.picture;
-    if (pic && pic.data) {
-      try { rec.cover = new Blob([new Uint8Array(pic.data)], { type: pic.format || 'image/jpeg' }); } catch (e) {}
-    }
-    rec.metaDone = true;
-  }
-
-  /* ================= adding / removing songs ================= */
-  async function addFiles(fileList) {
-    msg('');
-    const files = [...fileList];
-    const skipped = files.filter(f => !isAudio(f)).length;
-    const good = files.filter(isAudio);
-    if (!good.length) { if (skipped) msg('Those files are not audio files.', true); return; }
-    const added = [];
-    let n = 0;
-    for (const f of good) {
-      msg('Reading ' + (++n) + ' of ' + good.length + ': ' + f.name);
-      const [duration, tags] = await Promise.all([getDuration(f), readTags(f)]);
-      const rec = { name: f.name.replace(/\.[^.]+$/, ''), type: f.type, size: f.size, blob: f, duration, added: Date.now(), cover: null };
-      applyTags(rec, tags);
-      if (!tags) rec.metaDone = false;                      // retry later if the tag library was unavailable
-      if (db) {
-        try { rec.id = await idb('tracks', 'readwrite', s => s.add(rec)); }
-        catch (e) { rec.id = 'm' + memId++; msg('Could not save to browser storage. Songs will be lost on refresh.', true); }
-      } else rec.id = 'm' + memId++;
-      tracks.push(rec); added.push(rec);
-    }
-    const p = playlists.find(p => p.id === view);
-    if (p) { added.forEach(t => { if (!p.trackIds.includes(t.id)) p.trackIds.push(t.id); }); savePlaylist(p); }
-    if (!$('msg').classList.contains('err')) msg(skipped ? 'Added ' + added.length + '. Skipped ' + skipped + ' non-audio file(s).' : '');
-    renderAll();
-    if (curId == null && added.length) playTrack(added[0].id, viewList().map(t => t.id));
-  }
-
-  async function removeTrack(id) {
-    const t = byId(id); if (!t) return;
-    if (db && typeof id === 'number') { try { await idb('tracks', 'readwrite', s => s.delete(id)); } catch (e) {} }
-    for (const p of playlists) {
-      if (p.trackIds.includes(id)) { p.trackIds = p.trackIds.filter(x => x !== id); savePlaylist(p); }
-    }
-    if (coverUrls.has(id)) { URL.revokeObjectURL(coverUrls.get(id)); coverUrls.delete(id); }
-    colorCache.delete(id);
-    tracks = tracks.filter(x => x.id !== id);
-    queue = queue.filter(x => x !== id);
-    history = history.filter(x => x !== id);
-    if (curId === id) { audio.pause(); audio.removeAttribute('src'); audio.load(); curId = null; }
-    renderAll();
-  }
-
-  /* ================= playlists ================= */
-  async function createPlaylist(name) {
-    const p = { name, trackIds: [] };
-    if (db) { try { p.id = await idb('playlists', 'readwrite', s => s.add(p)); } catch (e) { p.id = 'p' + memId++; } }
-    else p.id = 'p' + memId++;
-    playlists.push(p);
-    return p;
-  }
-  function addToPlaylist(p, tid) { if (!p.trackIds.includes(tid)) { p.trackIds.push(tid); savePlaylist(p); } }
-  function removeFromPlaylist(p, tid) { p.trackIds = p.trackIds.filter(x => x !== tid); savePlaylist(p); }
-  async function deletePlaylist(p) {
-    if (db && typeof p.id === 'number') { try { await idb('playlists', 'readwrite', s => s.delete(p.id)); } catch (e) {} }
-    playlists = playlists.filter(x => x !== p);
-    if (view === p.id) view = 'library';
-    renderAll();
-  }
-
-  /* ================= dialogs ================= */
-  const dlg = $('dlg');
-  function openDialog(title, nodes, actions, onCancel) {
-    const b = $('dlgBody'); b.innerHTML = '';
-    const h = document.createElement('h3'); h.textContent = title; b.appendChild(h);
-    nodes.forEach(n => b.appendChild(n));
-    const a = $('dlgActions'); a.innerHTML = '';
-    actions.forEach(x => {
-      const bt = document.createElement('button');
-      bt.type = 'button'; bt.className = 'dbtn ' + (x.cls || ''); bt.textContent = x.label;
-      bt.onclick = () => { dlg.close(); x.fn && x.fn(); };
-      a.appendChild(bt);
-    });
-    dlg.oncancel = () => { onCancel && onCancel(); };
-    dlg.showModal();
-  }
-  const askName = (title, initial = '') => new Promise(res => {
-    const inp = document.createElement('input');
-    inp.value = initial; inp.maxLength = 60; inp.placeholder = 'Playlist name';
-    openDialog(title, [inp],
-      [{ label: 'Cancel', fn: () => res(null) }, { label: 'Save', cls: 'primary', fn: () => res(inp.value.trim() || null) }],
-      () => res(null));
-    inp.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); dlg.close(); res(inp.value.trim() || null); } };
-    inp.focus(); inp.select();
-  });
-  function showInfo(t) {
-    const art = document.createElement('div'); art.className = 'thumb info-art'; fillThumb(art, t);
-    const dl = document.createElement('dl'); dl.className = 'info';
-    const rows = [
-      ['Title', titleOf(t)], ['Artist', t.artist || '—'], ['Album', t.album || '—'],
-      ['Year', t.year || '—'], ['Genre', t.genre || '—'], ['Track #', t.trackNo || '—'],
-      ['Length', fmt(t.duration)], ['File', t.name], ['Format', t.type || '—'], ['Size', sizeMB(t.size)]
-    ];
-    rows.forEach(([k, v]) => {
-      const dt = document.createElement('dt'); dt.textContent = k;
-      const dd = document.createElement('dd'); dd.textContent = v;
-      dl.append(dt, dd);
-    });
-    const wrap = document.createElement('div'); wrap.append(art, dl);
-    openDialog('Song info', [wrap], [{ label: 'Close', cls: 'primary' }]);
-  }
-
-  /* ================= context menu ================= */
-  const menu = $('menu');
-  let menuBtn = null;
-  function closeMenu() { menu.style.display = 'none'; if (menuBtn) menuBtn.classList.remove('open'); menuBtn = null; }
-  function mItem(label, fn, cls) {
-    const d = document.createElement('div'); d.className = 'mi' + (cls ? ' ' + cls : ''); d.textContent = label;
-    d.onclick = () => { closeMenu(); fn(); };
-    menu.appendChild(d);
-  }
-  const mLabel = t => { const d = document.createElement('div'); d.className = 'ml'; d.textContent = t; menu.appendChild(d); };
-  const mSep = () => menu.appendChild(document.createElement('hr'));
-
-  function openMenu(btn, t) {
-    if (menuBtn === btn) return closeMenu();
-    closeMenu();
-    menu.innerHTML = '';
-    const curPl = playlists.find(p => p.id === view);
-    if (curPl) { mItem('Remove from this playlist', () => { removeFromPlaylist(curPl, t.id); renderAll(); }); mSep(); }
-    mLabel('Add to playlist');
-    playlists.forEach(p => {
-      const has = p.trackIds.includes(t.id);
-      mItem((has ? '✓ ' : '＋ ') + p.name, () => { has ? removeFromPlaylist(p, t.id) : addToPlaylist(p, t.id); renderAll(); });
-    });
-    mItem('✚ New playlist…', async () => {
-      const name = await askName('New playlist');
-      if (name) { const p = await createPlaylist(name); addToPlaylist(p, t.id); renderAll(); }
-    });
-    mSep();
-    mItem('Song info', () => showInfo(t));
-    mItem('Remove from library', () => removeTrack(t.id), 'danger');
-
-    menu.style.display = 'block';
-    const r = btn.getBoundingClientRect();
-    const mw = menu.offsetWidth, mh = menu.offsetHeight;
-    let left = Math.max(8, Math.min(r.right - mw, innerWidth - mw - 8));
-    let top = r.bottom + 4;
-    if (top + mh > innerHeight - 8) top = Math.max(8, r.top - mh - 4);
-    menu.style.left = left + 'px'; menu.style.top = top + 'px';
-    btn.classList.add('open'); menuBtn = btn;
-  }
-  document.addEventListener('click', e => { if (!e.target.closest('#menu') && !e.target.closest('.dots')) closeMenu(); });
-  $('main').addEventListener('scroll', closeMenu);
-
-  /* ================= views / rendering ================= */
-  function baseList() {
-    if (view === 'library') return tracks.slice();
-    const p = playlists.find(p => p.id === view);
-    return p ? p.trackIds.map(byId).filter(Boolean) : [];
-  }
   function viewList() {
-    let list = baseList();
+    let list = tracks.slice();
     const q = $('search').value.trim().toLowerCase();
-    if (q) list = list.filter(t => (titleOf(t) + ' ' + artistOf(t) + ' ' + (t.album || '')).toLowerCase().includes(q));
-    if (sortKey) {
-      const val = t => sortKey === 'duration' ? (t.duration || 0) : sortKey === 'title' ? titleOf(t).toLowerCase() : (t.album || '').toLowerCase();
-      list.sort((a, b) => { const x = val(a), y = val(b); return (x > y ? 1 : x < y ? -1 : 0) * sortDir; });
+    if (q) {
+      list = list.filter(t => (titleOf(t) + ' ' + artistOf(t) + ' ' + (t.album || '')).toLowerCase().includes(q));
     }
     return list;
   }
-  function setView(v) { view = v; sortKey = ''; closeMenu(); renderAll(); $('main').scrollTop = 0; }
-
-  function renderSidebar() {
-    $('navLib').className = 'nav-item' + (view === 'library' ? ' active' : '');
-    const box = $('plList'); box.innerHTML = '';
-    if (!playlists.length) {
-      const d = document.createElement('div'); d.className = 'pl-none';
-      d.textContent = 'No playlists yet. Click ＋ to make one.';
-      box.appendChild(d);
-    }
-    playlists.forEach(p => {
-      const d = document.createElement('div'); d.className = 'pl-item' + (view === p.id ? ' active' : '');
-      const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = '🎵 ' + p.name;
-      const n = document.createElement('span'); n.className = 'n'; n.textContent = p.trackIds.filter(byId).length;
-      d.append(nm, n); d.onclick = () => setView(p.id);
-      box.appendChild(d);
-    });
-  }
 
   function renderMain() {
-    const pl = playlists.find(p => p.id === view);
-    const base = baseList();
     const list = viewList();
-
-    // hero
-    $('heroLabel').textContent = pl ? 'Playlist' : 'Library';
-    $('heroTitle').textContent = pl ? pl.name : 'Your Library';
-    const secs = base.reduce((s, t) => s + (t.duration || 0), 0);
-    const mins = Math.round(secs / 60);
-    $('count').textContent = plural(base.length, 'song') + (base.length ? ' · ' + (mins >= 60 ? Math.floor(mins / 60) + ' hr ' + (mins % 60) + ' min' : mins + ' min') : '');
-    const art = $('heroArt'); art.innerHTML = ''; art.removeAttribute('style');
-    const withCover = base.find(t => t.cover);
-    if (withCover) { const img = document.createElement('img'); img.src = coverUrl(withCover); img.alt = ''; art.appendChild(img); }
-    else art.textContent = pl ? '🎵' : '🎧';
-
-    $('renamePl').hidden = !pl; $('deletePl').hidden = !pl;
-
-    // sort arrows
-    const arrow = k => sortKey === k ? (sortDir === 1 ? ' ▲' : ' ▼') : '';
-    $('hTitle').textContent = 'Title' + arrow('title');
-    $('hAlbum').textContent = 'Album' + arrow('album');
-    $('hDur').textContent = 'Time' + arrow('duration');
-
-    // rows
+    $('count').textContent = list.length + ' songs';
     const rows = $('rows'); rows.innerHTML = '';
-    const ids = list.map(t => t.id);
-    list.forEach((t, i) => {
-      const row = document.createElement('div');
-      row.className = 'row' + (t.id === curId ? ' active' : '');
+    const empty = $('empty'); empty.innerHTML = '';
 
-      const num = document.createElement('div'); num.className = 'num';
-      num.textContent = (t.id === curId && !audio.paused) ? '♫' : (i + 1);
+    if (!list.length) {
+      empty.innerHTML = '<h2>No songs found</h2>';
+    } else {
+      list.forEach((t, i) => {
+        const row = document.createElement('div');
+        row.className = 'row' + (t.id === curId ? ' active' : '');
 
-      const tc = document.createElement('div'); tc.className = 'title-cell';
-      const th = document.createElement('div'); th.className = 'thumb'; fillThumb(th, t);
-      const txt = document.createElement('div'); txt.style.minWidth = 0;
-      const tt = document.createElement('div'); tt.className = 't'; tt.textContent = titleOf(t);
-      tt.title = 'Open Now Playing';
-      tt.onclick = e => { e.stopPropagation(); playTrack(t.id, ids); openNP(); };   // clicking the NAME opens the page
-      const sb = document.createElement('div'); sb.className = 'sub'; sb.textContent = artistOf(t);
-      txt.append(tt, sb); tc.append(th, txt);
+        row.innerHTML = `
+          <div class="num">${t.id === curId ? '▶' : i + 1}</div>
+          <div class="title-cell">
+            <div class="thumb">♪</div>
+            <div>
+              <div class="t">${titleOf(t)}</div>
+              <div class="sub">${artistOf(t)}</div>
+            </div>
+          </div>
+          <div class="alb">${t.album || '—'}</div>
+          <div class="dur">${fmt(t.duration)}</div>
+          <div></div>
+        `;
 
-      const alb = document.createElement('div'); alb.className = 'alb'; alb.textContent = t.album || '—';
-      const d = document.createElement('div'); d.className = 'dur'; d.textContent = fmt(t.duration);
-      const dots = document.createElement('button'); dots.className = 'dots'; dots.title = 'More'; dots.textContent = '⋯';
-      dots.onclick = e => { e.stopPropagation(); openMenu(dots, t); };
-
-      row.append(num, tc, alb, d, dots);
-      row.onclick = () => playTrack(t.id, ids);
-      rows.appendChild(row);
-    });
-
-    const empty = $('empty');
-    if (list.length) empty.style.display = 'none';
-    else {
-      empty.style.display = 'block';
-      if ($('search').value.trim()) empty.innerHTML = '<h2>No matches</h2><p>Try a different search.</p>';
-      else if (pl) empty.innerHTML = '<h2>This playlist is empty</h2><p>Click the ⋯ button on any song in Your Library and choose a playlist,<br>or click <b>Add songs</b> to add new files straight into this playlist.</p>';
-      else empty.innerHTML = '<h2>No songs yet</h2><p>Click <b>Add songs</b> or drag audio files anywhere on this page.</p>';
-    }
-
-    // big play button state
-    const sameQueue = queue.length && queue.join() === ids.join();
-    $('bigPlay').textContent = (sameQueue && !audio.paused) ? '⏸' : '▶';
-  }
-
-  function updateBar() {
-    const t = byId(curId);
-    $('npName').textContent = t ? titleOf(t) : 'Nothing playing';
-    $('npSub').textContent = t ? (artistOf(t) + (t.album ? ' • ' + t.album : '')) : 'Add some songs';
-    fillThumb($('npThumb'), t);
-    document.title = t ? titleOf(t) + ' · ' + artistOf(t) : 'My Music';
-    $('play').textContent = audio.paused ? '▶' : '⏸';
-    renderNP();
-  }
-  function renderAll() { renderSidebar(); renderMain(); updateBar(); }
-
-  /* ================= Now Playing page ================= */
-  function setNpBottom() { npPage.style.bottom = ($('bar').offsetHeight + 16) + 'px'; }
-
-  function openNP() {
-    if (curId == null || npOpen) return;
-    npOpen = true;
-    setNpBottom();
-    npPage.classList.add('open');
-    try { history.pushState({ np: true }, ''); } catch (e) {}   // so the browser/phone Back button closes the page
-    renderNP();
-    npPage.scrollTop = 0;
-  }
-  function closeNP(fromPop) {
-    if (!npOpen) return;
-    npOpen = false;
-    npPage.classList.remove('open');
-    if (!fromPop) { try { if (history.state && history.state.np) history.back(); } catch (e) {} }
-  }
-  window.addEventListener('popstate', () => { if (npOpen) closeNP(true); });
-  window.addEventListener('resize', () => { if (npOpen) setNpBottom(); });
-
-  function setNpBackground(t) {
-    const apply = c => { npPage.style.background = `linear-gradient(180deg, ${c} 0%, #121212 90%)`; };
-    if (colorCache.has(t.id)) return apply(colorCache.get(t.id));
-    apply(`hsl(${hue(titleOf(t))},45%,28%)`);
-    const u = coverUrl(t);
-    if (!u) return;
-    const img = new Image();
-    img.onload = () => {
-      try {
-        const c = document.createElement('canvas'); c.width = c.height = 24;
-        const x = c.getContext('2d'); x.drawImage(img, 0, 0, 24, 24);
-        const d = x.getImageData(0, 0, 24, 24).data;
-        let r = 0, g = 0, b = 0, n = 0;
-        for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; b += d[i + 2]; n++; }
-        const k = 0.75 / n;                       // average colour, darkened so the text stays readable
-        const col = `rgb(${Math.round(r * k)},${Math.round(g * k)},${Math.round(b * k)})`;
-        colorCache.set(t.id, col);
-        if (npOpen && curId === t.id) apply(col);
-      } catch (e) {}
-    };
-    img.src = u;
-  }
-
-  function renderNP() {
-    if (!npOpen) return;
-    const t = byId(curId);
-    if (!t) { closeNP(); return; }
-
-    fillThumb($('npArt'), t);
-    $('npTitle').textContent = titleOf(t);
-    $('npArtist').textContent = artistOf(t);
-
-    const meta = $('npMeta'); meta.innerHTML = '';
-    [
-      t.album, t.year, t.genre,
-      t.trackNo ? 'Track ' + t.trackNo : '',
-      t.duration ? fmt(t.duration) : '',
-      (t.type || '').replace('audio/', '').replace('x-', '').toUpperCase(),
-      sizeMB(t.size)
-    ].filter(Boolean).forEach(v => { const s = document.createElement('span'); s.textContent = v; meta.appendChild(s); });
-
-    setNpBackground(t);
-
-    // up next
-    const list = $('npNextList'); list.innerHTML = '';
-    $('npNextHead').textContent = shuffleOn ? 'Queue (shuffle is on)' : 'Up next';
-    const i = queue.indexOf(curId);
-    const upcoming = (i === -1 ? [] : queue.slice(i + 1)).map(byId).filter(Boolean).slice(0, 10);
-    if (!upcoming.length) {
-      const d = document.createElement('div'); d.className = 'np-none'; d.textContent = 'Nothing else in the queue.';
-      list.appendChild(d);
-    }
-    upcoming.forEach(u => {
-      const row = document.createElement('div'); row.className = 'np-row';
-      const th = document.createElement('div'); th.className = 'thumb'; fillThumb(th, u);
-      const who = document.createElement('div'); who.className = 'who';
-      const tt = document.createElement('div'); tt.className = 't'; tt.textContent = titleOf(u);
-      const aa = document.createElement('div'); aa.className = 'a'; aa.textContent = artistOf(u);
-      who.append(tt, aa);
-      const d = document.createElement('div'); d.className = 'd'; d.textContent = u.duration ? fmt(u.duration) : '';
-      row.append(th, who, d);
-      row.onclick = () => playTrack(u.id);
-      list.appendChild(row);
-    });
-  }
-
-  /* ================= playback ================= */
-  function playTrack(id, newQueue, fromHistory) {
-    const t = byId(id); if (!t) return;
-    if (newQueue) { queue = newQueue.slice(); }
-    else if (!queue.includes(id)) queue = [id];
-    if (!fromHistory && curId != null && curId !== id) history.push(curId);
-    curId = id;
-    msg('');
-    if (currentUrl) URL.revokeObjectURL(currentUrl);
-    currentUrl = URL.createObjectURL(t.blob);
-    retried.delete(id);
-    audio.src = currentUrl;
-    audio.play().catch(e => { if (e.name !== 'AbortError') msg('Press play to start (' + e.name + ').', true); });
-    renderAll();
-    if ('mediaSession' in navigator) {
-      const u = coverUrl(t);
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: titleOf(t), artist: t.artist || '', album: t.album || '',
-        artwork: u ? [{ src: u, sizes: '512x512', type: (t.cover && t.cover.type) || 'image/jpeg' }] : []
+        row.onclick = () => playTrack(t.id);
+        rows.appendChild(row);
       });
     }
   }
-  function pickNext(auto) {
-    if (!queue.length) return null;
-    if (repeatMode === 2 && auto) return curId;
-    if (shuffleOn && queue.length > 1) {
-      let n; do { n = queue[Math.floor(Math.random() * queue.length)]; } while (n === curId);
-      return n;
-    }
-    const i = queue.indexOf(curId);
-    if (i + 1 >= queue.length) return (repeatMode === 1 || !auto) ? queue[0] : null;
-    return queue[i + 1];
-  }
-  function next(auto) {
-    const n = pickNext(auto);
-    if (n == null) { audio.pause(); audio.currentTime = 0; return; }
-    if (n === curId) { audio.currentTime = 0; audio.play(); return; }
-    playTrack(n);
-  }
-  function prev() {
-    if (!queue.length && !tracks.length) return;
-    if (audio.currentTime > 3) { audio.currentTime = 0; return; }
-    if (history.length) return playTrack(history.pop(), null, true);
-    const i = queue.indexOf(curId);
-    if (i > 0) playTrack(queue[i - 1], null, true); else audio.currentTime = 0;
-  }
-  function startView() {
-    const ids = viewList().map(t => t.id);
-    if (!ids.length) return;
-    const first = shuffleOn ? ids[Math.floor(Math.random() * ids.length)] : ids[0];
-    playTrack(first, ids);
-  }
-  function toggle() {
-    if (curId == null || !audio.src) return startView();
-    if (audio.paused) audio.play().catch(e => msg('Playback error: ' + e.message, true));
-    else audio.pause();
-  }
-  function bigPlay() {
-    const ids = viewList().map(t => t.id);
-    const sameQueue = queue.length && queue.join() === ids.join();
-    if (sameQueue && curId != null) toggle(); else startView();
+
+  function playTrack(id) {
+    const t = byId(id);
+    if (!t) return;
+    curId = id;
+    audio.src = typeof t.blob === 'string' ? t.blob : URL.createObjectURL(t.blob);
+    audio.play().catch(() => {});
+    updatePlayerBar();
+    renderMain();
   }
 
-  /* ================= audio events ================= */
-  audio.addEventListener('play', () => { updateBar(); renderMain(); });
-  audio.addEventListener('pause', () => { updateBar(); renderMain(); });
-  audio.addEventListener('ended', () => next(true));
-  audio.addEventListener('loadedmetadata', () => {
-    $('dur').textContent = fmt(audio.duration);
+  function updatePlayerBar() {
     const t = byId(curId);
-    if (t && !t.duration && isFinite(audio.duration)) { t.duration = audio.duration; saveTrack(t); renderMain(); }
-  });
-  audio.addEventListener('timeupdate', () => {
-    $('cur').textContent = fmt(audio.currentTime);
-    if (audio.duration) { $('seek').value = audio.currentTime / audio.duration * 1000; setPct($('seek')); }
-  });
-  audio.addEventListener('error', () => {
-    const t = byId(curId); if (!t) return;
-    if (!retried.has(t.id)) {            // fallback: some environments block blob: URLs
-      retried.add(t.id);
-      const r = new FileReader();
-      r.onload = () => { audio.src = r.result; audio.play().catch(() => {}); };
-      r.readAsDataURL(t.blob);
-      return;
-    }
-    msg(audio.canPlayType(t.type)
-      ? 'Could not load "' + titleOf(t) + '". Try opening this page in Chrome, Firefox or Safari.'
-      : 'Your browser cannot play this format (' + (t.type || 'unknown') + '). Try mp3 or wav.', true);
-  });
-
-  /* ================= wiring ================= */
-  $('addBtn').onclick = () => $('files').click();
-  $('files').onchange = e => { addFiles(e.target.files); e.target.value = ''; };
-  $('navLib').onclick = () => setView('library');
-  $('newPl').onclick = async () => {
-    const name = await askName('New playlist');
-    if (name) { const p = await createPlaylist(name); setView(p.id); }
-  };
-  $('renamePl').onclick = async () => {
-    const p = playlists.find(p => p.id === view); if (!p) return;
-    const name = await askName('Rename playlist', p.name);
-    if (name) { p.name = name; savePlaylist(p); renderAll(); }
-  };
-  $('deletePl').onclick = () => {
-    const p = playlists.find(p => p.id === view); if (!p) return;
-    const note = document.createElement('p');
-    note.style.cssText = 'color:#b3b3b3;margin:0';
-    note.textContent = 'This removes the playlist only. Your songs stay in your library.';
-    openDialog('Delete "' + p.name + '"?', [note],
-      [{ label: 'Cancel' }, { label: 'Delete', cls: 'danger', fn: () => deletePlaylist(p) }]);
-  };
-  $('search').oninput = renderMain;
-  [['hTitle', 'title'], ['hAlbum', 'album'], ['hDur', 'duration']].forEach(([id, key]) => {
-    $(id).onclick = () => {
-      if (sortKey !== key) { sortKey = key; sortDir = 1; }
-      else if (sortDir === 1) sortDir = -1;
-      else sortKey = '';
-      renderMain();
-    };
-  });
-
-  // Now Playing page open/close
-  $('npBack').onclick = () => closeNP();
-  $('npThumb').onclick = $('npName').onclick = () => { npOpen ? closeNP() : openNP(); };
-
-  $('play').onclick = toggle;
-  $('bigPlay').onclick = bigPlay;
-  $('next').onclick = () => next(false);
-  $('prev').onclick = prev;
-  $('shuffle').onclick = () => { shuffleOn = !shuffleOn; $('shuffle').classList.toggle('on', shuffleOn); renderNP(); };
-  $('repeat').onclick = () => {
-    repeatMode = (repeatMode + 1) % 3;
-    $('repeat').textContent = repeatMode === 2 ? '🔂' : '🔁';
-    $('repeat').classList.toggle('on', repeatMode > 0);
-  };
-  $('seek').oninput = e => { if (audio.duration) audio.currentTime = e.target.value / 1000 * audio.duration; setPct(e.target); };
-  $('vol').oninput = e => {
-    audio.volume = e.target.value / 100; audio.muted = false;
-    $('mute').textContent = audio.volume === 0 ? '🔇' : '🔊'; setPct(e.target);
-  };
-  $('mute').onclick = () => { audio.muted = !audio.muted; $('mute').textContent = audio.muted ? '🔇' : '🔊'; };
-  audio.volume = 0.8; setPct($('vol')); setPct($('seek'));
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && npOpen && !dlg.open) { closeNP(); return; }
-    if (e.target.tagName === 'INPUT' && e.target.type !== 'range') return;
-    if (dlg.open) return;
-    if (e.code === 'Space') { e.preventDefault(); toggle(); }
-    else if (e.code === 'ArrowRight' && e.shiftKey) next(false);
-    else if (e.code === 'ArrowLeft' && e.shiftKey) prev();
-  });
-  if ('mediaSession' in navigator) {
-    navigator.mediaSession.setActionHandler('play', toggle);
-    navigator.mediaSession.setActionHandler('pause', toggle);
-    navigator.mediaSession.setActionHandler('nexttrack', () => next(false));
-    navigator.mediaSession.setActionHandler('previoustrack', prev);
+    $('npName').textContent = t ? titleOf(t) : 'Nothing playing';
+    $('npSub').textContent = t ? artistOf(t) : 'Add some songs';
+    $('play').textContent = audio.paused ? '▶' : '⏸';
+    $('bigPlay').textContent = audio.paused ? '▶' : '⏸';
   }
 
-  // drag & drop files anywhere
-  const main = $('main');
-  ['dragenter', 'dragover'].forEach(ev => document.addEventListener(ev, e => { e.preventDefault(); main.classList.add('dragover'); }));
-  document.addEventListener('dragleave', e => { if (e.target === document.documentElement) main.classList.remove('dragover'); });
-  document.addEventListener('drop', e => {
-    e.preventDefault(); main.classList.remove('dragover');
-    if (e.dataTransfer && e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
-  });
+  $('search').oninput = () => renderMain();
+  $('play').onclick = $('bigPlay').onclick = () => {
+    if (!curId && tracks.length) playTrack(tracks[0].id);
+    else if (audio.paused) audio.play();
+    else audio.pause();
+    updatePlayerBar();
+  };
 
-  /* ================= init ================= */
-  renderAll();
-  openDB().then(async d => {
-    db = d;
-    tracks = (await idb('tracks', 'readonly', s => s.getAll())) || [];
-    playlists = (await idb('playlists', 'readonly', s => s.getAll())) || [];
-    renderAll();
-    // songs saved by the older version have no tags yet: read them now
-    for (const t of tracks.filter(t => !t.metaDone)) {
-      const tags = await readTags(t.blob);
-      if (tags === null) break;                       // tag library unavailable, try again next time
-      t.name = t.name || 'Untitled';
-      applyTags(t, tags);
-      await saveTrack(t);
-    }
-    renderAll();
-  }).catch(() => {
-    msg('Browser storage is unavailable here, so songs and playlists will not be saved after you close the page.', true);
-  });
+  audio.ontimeupdate = () => {
+    if (!audio.duration) return;
+    $('cur').textContent = fmt(audio.currentTime);
+    $('dur').textContent = fmt(audio.duration);
+    $('seek').value = (audio.currentTime / audio.duration) * 1000;
+  };
+
+  $('seek').oninput = e => {
+    if (audio.duration) audio.currentTime = (e.target.value / 1000) * audio.duration;
+  };
+
+  $('vol').oninput = e => { audio.volume = e.target.value / 100; };
+
+  tracks = defaultSongs;
+  renderMain();
 })();
 </script>
 </body>
